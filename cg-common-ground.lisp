@@ -55,6 +55,7 @@
       sym))
 
 (defun parse-out-keywords (kwd-lst lambda-list)
+  "Return list (KWD1 KWD2 ... KWDn . OTHER-ARGS) collecting all keyword-looking pairs of arguments in lambda list"
   (let ((kwds (make-array (length kwd-lst) :initial-element nil)))
     (iter (generate elt in lambda-list)
 	  (if (keywordp (next elt))
