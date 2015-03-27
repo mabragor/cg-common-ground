@@ -5,5 +5,5 @@
   (:export #:joinl #:join #:frnl #:fart
 	   #:camelcaseize #:underscorize #:capitalize
 	   #:camcase-if-not-string #:unscore-if-not-string #:*symbol-stringification-style
-	   #:stringify-symbol #:stringify-if-symbol
+	   #:stringify-symbol #:stringify-if-symbol #:destringify-symbol
 	   #:parse-out-keywords))
