@@ -20,3 +20,11 @@
 
 (test basic
   (is (eq t t)))
+
+(test destringify-symbol
+  (macrolet ((frob (x y)
+	       `(is (string= ,x (string (destringify-symbol ,y))))))
+    (frob "+%-F-O-O.-BA-R" "%FOO.BaR")
+    (frob "*%FOO.B-AR" "%FOO.B_AR")
+    (frob "+%-FOO.-BAR" "%Foo.Bar")
+    (frob "%FOO.BAR-BAZ" "%foo.bar_baz")))
