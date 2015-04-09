@@ -67,14 +67,14 @@
 
 
 (defun uscore-str-p (str)
-  (cl-ppcre:all-matches "^[a-z0-9_]+$" str))
+  (cl-ppcre:all-matches "^[a-z0-9_%@$.]+$" str))
 
 
 (defun camcase-str-p (str)
-  (cl-ppcre:all-matches "^[a-zA-Z0-9]+$" str))
+  (cl-ppcre:all-matches "^[a-zA-Z0-9%@$.]+$" str))
 
 (defun capcase-str-p (str)
-  (cl-ppcre:all-matches "^[A-Z0-9_]+$" str))
+  (cl-ppcre:all-matches "^[A-Z0-9_%@$.]+$" str))
 
 (defun capital-char-p (char)
   (and (<= 65 (char-code char)) (<= (char-code char) 90)))
@@ -88,15 +88,17 @@
 	    (setf cur nil))
 	  (push char cur)
 	  (finally (push (coerce (nreverse cur) 'string) res)))
-    ;; first one is always empty string
-    (cdr (nreverse res))))
+    (let ((res (nreverse res)))
+      (if (string= "" (car res))
+	  (cdr res)
+	  res))))
 	      
 	
 
 (defun destringify-string (str)
   (cond ((uscore-str-p str) (cl-ppcre:regex-replace-all "_" (string-upcase str) "-"))
-	((camcase-str-p str) (join "" "+" (string-upcase (joinl "-" (split-on-capitals str)))))
 	((capcase-str-p str) (join "" "*" (cl-ppcre:regex-replace-all "_" str "-")))
+	((camcase-str-p str) (join "" "+" (string-upcase (joinl "-" (split-on-capitals str)))))
 	(t (error "Don't know how to destringify this: ~s" str))))
 
 (defun destringify-symbol (str &optional (package nil package-p))
