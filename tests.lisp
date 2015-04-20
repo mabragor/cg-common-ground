@@ -21,6 +21,12 @@
 (test basic
   (is (eq t t)))
 
+(test stringify-symbol
+  (is (equal "subCamCase" (stringify-symbol '+-sub-cam-case)))
+  (is (equal "CamCase" (stringify-symbol '+cam-case)))
+  (is (equal "snake_case" (stringify-symbol 'snake-case)))
+  (is (equal "CAPITAL_CASE" (stringify-symbol '*capital-case))))
+
 (test destringify-symbol
   (macrolet ((frob (x y)
 	       `(is (string= ,x (string (destringify-symbol ,y))))))

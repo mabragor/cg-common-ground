@@ -19,6 +19,12 @@
 (defun capitalize (name)
   (format nil "~{~a~^_~}" (cl-ppcre:split "-" (string-upcase name))))
 
+(defun subcamcaseize (name)
+  (let ((lst (cl-ppcre:split "-" (string-downcase name))))
+    (format nil "~{~a~}" (cons (car lst)
+			       (mapcar #'string-capitalize (cdr lst))))))
+
+
 (defun camcase-if-not-string (name)
   (if (stringp name)
       name
@@ -40,7 +46,9 @@
       (if (equal 0 (length str))
 	  str
 	  (cond ((char= #\- (char str 0)) (underscorize (frob #\-)))
-		((char= #\+ (char str 0)) (camelcaseize (frob #\+)))
+		((char= #\+ (char str 0)) (if (char= #\- (char str 1))
+					      (subcamcaseize (subseq (frob #\+) 1))
+					      (camelcaseize (frob #\+))))
 		((char= #\* (char str 0)) (capitalize (frob #\*)))
 		(t (cond ((eq :unscore *symbol-stringification-style*)
 			  (underscorize str))
