@@ -81,6 +81,10 @@
 (defun camcase-str-p (str)
   (cl-ppcre:all-matches "^[a-zA-Z0-9%@$.]+$" str))
 
+(defun subcamcase-str-p (str)
+  "Only use after general check for CAMCASE-STR-P passed."
+  (cl-ppcre:all-matches "^[0-9%@$.]*[a-z]" str))
+
 (defun capcase-str-p (str)
   (cl-ppcre:all-matches "^[A-Z0-9_%@$.]+$" str))
 
@@ -106,7 +110,9 @@
 (defun destringify-string (str)
   (cond ((uscore-str-p str) (cl-ppcre:regex-replace-all "_" (string-upcase str) "-"))
 	((capcase-str-p str) (join "" "*" (cl-ppcre:regex-replace-all "_" str "-")))
-	((camcase-str-p str) (join "" "+" (string-upcase (joinl "-" (split-on-capitals str)))))
+	((camcase-str-p str) (if (subcamcase-str-p str)
+				 (join "" "+-" (string-upcase (joinl "-" (split-on-capitals str))))
+				 (join "" "+" (string-upcase (joinl "-" (split-on-capitals str))))))
 	(t (error "Don't know how to destringify this: ~s" str))))
 
 (defun destringify-symbol (str &optional (package nil package-p))

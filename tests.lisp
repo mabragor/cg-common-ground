@@ -25,7 +25,8 @@
   (is (equal "subCamCase" (stringify-symbol '+-sub-cam-case)))
   (is (equal "CamCase" (stringify-symbol '+cam-case)))
   (is (equal "snake_case" (stringify-symbol 'snake-case)))
-  (is (equal "CAPITAL_CASE" (stringify-symbol '*capital-case))))
+  (is (equal "CAPITAL_CASE" (stringify-symbol '*capital-case)))
+  (is (equal "@getPointer" (stringify-symbol '+-@get-pointer))))
 
 (test destringify-symbol
   (macrolet ((frob (x y)
@@ -33,4 +34,5 @@
     (frob "+%-F-O-O.-BA-R" "%FOO.BaR")
     (frob "*%FOO.B-AR" "%FOO.B_AR")
     (frob "+%-FOO.-BAR" "%Foo.Bar")
-    (frob "%FOO.BAR-BAZ" "%foo.bar_baz")))
+    (frob "%FOO.BAR-BAZ" "%foo.bar_baz")
+    (frob "+-@GET-POINTER" "@getPointer")))
