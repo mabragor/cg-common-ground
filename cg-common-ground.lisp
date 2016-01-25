@@ -124,3 +124,15 @@
 (defun hash->assoc (hash)
   (iter (for (key val) in-hashtable hash)
 	(collect (cons key val))))
+
+(defun pairs (lst)
+  (assert (evenp (length lst)))
+  (let (tmp res)
+    (iter (for i from 0)
+	  (for elt in lst)
+	  (push elt tmp)
+	  (when (oddp i)
+	    (push (nreverse tmp) res)
+	    (setf tmp nil)))
+    (nreverse res)))
+
