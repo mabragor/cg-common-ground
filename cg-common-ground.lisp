@@ -121,6 +121,6 @@
 	(intern destr package)
 	(intern destr))))
   
-
-
-  
+(defun hash->assoc (hash)
+  (iter (for (key val) in-hashtable hash)
+	(collect (cons key val))))
